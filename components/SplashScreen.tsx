@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Animated, StyleSheet, Text } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Path } from 'react-native-svg';
 
 interface SplashScreenProps {
     onFinish: () => void;
@@ -64,8 +65,21 @@ export const SplashScreen = ({ onFinish }: SplashScreenProps) => {
                     transform: [{ scale: scaleAnim }],
                 }
             ]}>
-                <Text style={splashStyles.logo}>Speed Reader</Text>
-                <Text style={splashStyles.tagline}>Grow your reading speed</Text>
+                <Text style={splashStyles.logo}>
+                    Speed
+                    <Svg width={40} height={40} viewBox="0 0 24 24" fill="none">
+                        <Path
+                            d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
+                            fill="#FCD34D"
+                            stroke="#FCD34D"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </Svg>
+                    Read
+                </Text>
+                <Text style={splashStyles.tagline}>Read faster. Comprehend better.</Text>
             </Animated.View>
         </LinearGradient>
     );
@@ -77,17 +91,17 @@ const splashStyles = StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
-        fontSize: 50,
+        fontSize: 48,
         fontWeight: 'bold',
-        color: '#776e65',
+        color: '#ffffff',
         marginBottom: 20,
-        textShadowColor: 'rgba(119, 110, 101, 0.3)',
+        textShadowColor: 'rgba(255, 255, 255, 0.3)',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 4,
     },
     tagline: {
         fontSize: 16,
-        color: '#776e65',
+        color: '#ffffff',
         opacity: 0.8,
         textAlign: 'center',
     },
