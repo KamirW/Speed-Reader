@@ -42,14 +42,20 @@ export const SplashScreen = ({ onFinish }: SplashScreenProps) => {
                     duration: 300,
                     useNativeDriver: true,
                 })
-            ]).start(() => {
+            ]).start((finished) => {
                 onFinish();
             })
         }, 2000)
 
+        // Fallback timer to ensure onFinish is always called
+        const fallbackTimer = setTimeout(() => {
+            onFinish();
+        }, 3000);
+
         return () => {
             // Cleanup animation
-            clearTimeout(timer)
+            clearTimeout(timer);
+            clearTimeout(fallbackTimer);
         }
     }, [fadeAnim, scaleAnim, onFinish]);
 

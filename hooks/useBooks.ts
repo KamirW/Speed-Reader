@@ -15,17 +15,30 @@ interface Book {
 }
 
 const fetchPopularBooks = async () => {
-  const response = await fetch('https://gutendex.com/books?sort=popular&mime_type=text/plain');
-  const data = await response.json();
-  
-  // Filter books that have plain text formats
-  const booksWithText = data.results.filter((book: any) => 
-    book.formats['text/plain'] || 
-    book.formats['text/plain; charset=utf-8'] || 
-    book.formats['text/plain; charset=us-ascii']
-  ).slice(0, 20); // Limit to 20 books for performance
-  
-  return booksWithText;
+  try {
+    console.log('Fetching popular books...');
+    const response = await fetch('https://gutendex.com/books/?sort=popular&mime_type=text/plain');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('API response received:', data.results?.length || 0, 'books');
+    
+    // Filter books that have plain text formats
+    const booksWithText = data.results.filter((book: any) => 
+      book.formats['text/plain'] || 
+      book.formats['text/plain; charset=utf-8'] || 
+      book.formats['text/plain; charset=us-ascii']
+    ).slice(0, 20); // Limit to 20 books for performance
+    
+    console.log('Books with text format:', booksWithText.length);
+    return booksWithText;
+  } catch (error) {
+    console.error('Error fetching popular books:', error);
+    throw error;
+  }
 };
 
 const searchBooks = async (searchQuery: string) => {
@@ -33,16 +46,29 @@ const searchBooks = async (searchQuery: string) => {
     return fetchPopularBooks();
   }
 
-  const response = await fetch(`https://gutendex.com/books?search=${encodeURIComponent(searchQuery)}&mime_type=text/plain`);
-  const data = await response.json();
-  
-  const booksWithText = data.results.filter((book: any) => 
-    book.formats['text/plain'] || 
-    book.formats['text/plain; charset=utf-8'] || 
-    book.formats['text/plain; charset=us-ascii']
-  );
-  
-  return booksWithText;
+  try {
+    console.log('Searching books for:', searchQuery);
+    const response = await fetch(`https://gutendex.com/books/?search=${encodeURIComponent(searchQuery)}&mime_type=text/plain`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('Search API response received:', data.results?.length || 0, 'books');
+    
+    const booksWithText = data.results.filter((book: any) => 
+      book.formats['text/plain'] || 
+      book.formats['text/plain; charset=utf-8'] || 
+      book.formats['text/plain; charset=us-ascii']
+    );
+    
+    console.log('Search results with text format:', booksWithText.length);
+    return booksWithText;
+  } catch (error) {
+    console.error('Error searching books:', error);
+    throw error;
+  }
 };
 
 export const useBooks = (searchQuery: string = '') => {
@@ -53,10 +79,16 @@ export const useBooks = (searchQuery: string = '') => {
     queryFn: () => searchQuery.trim() ? searchBooks(searchQuery) : fetchPopularBooks(),
     staleTime: 30 * 60 * 1000, // 30 minutes
     gcTime: 60 * 60 * 1000, // 1 hour
+    retry: (failureCount, error) => {
+      console.log(`Query retry attempt ${failureCount}:`, error);
+      return failureCount < 3; // Retry up to 3 times
+    },
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 
   if (error) {
-    Alert.alert('Error', 'Failed to load books. Please try again.');
+    console.error('useBooks hook error:', error);
+    Alert.alert('Error', 'Failed to load books. Please check your internet connection and try again.');
   }
 
   return {

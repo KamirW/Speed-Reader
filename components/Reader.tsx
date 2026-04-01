@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { WordDisplay } from './WordDisplay';
 
@@ -31,6 +31,39 @@ export function Reader({
   onPickDocument,
 }: ReaderProps) {
   const currentWord = words[currentWordIndex] || '';
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const progressPercentage = words.length > 0 ? (currentWordIndex / words.length) * 100 : 0;
+
+  useEffect(() => {
+    // Animate word transitions
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0.7,
+          duration: 50,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 0.95,
+          duration: 50,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  }, [currentWordIndex]);
 
   return (
     <LinearGradient
@@ -46,6 +79,19 @@ export function Reader({
           <Text style={styles.bookTitle} numberOfLines={1}>
             {currentBookTitle || 'Speed Reader'}
           </Text>
+          <View style={styles.progressContainer}>
+            <View style={styles.progressBar}>
+              <View 
+                style={[
+                  styles.progressFill,
+                  { width: `${progressPercentage}%` }
+                ]}
+              />
+            </View>
+            <Text style={styles.progressPercentageText}>
+              {Math.round(progressPercentage)}%
+            </Text>
+          </View>
           <Text style={styles.progressText}>
             Word {currentWordIndex + 1} of {words.length}
           </Text>
@@ -54,7 +100,14 @@ export function Reader({
       </View>
 
       <View style={styles.wordDisplayContainer}>
-        <WordDisplay word={currentWord} isAnimating={isReading || currentWordIndex === 0} />
+        <Animated.View 
+          style={{
+            opacity: fadeAnim,
+            transform: [{ scale: scaleAnim }],
+          }}
+        >
+          <WordDisplay word={currentWord} isAnimating={isReading || currentWordIndex === 0} />
+        </Animated.View>
       </View>
 
       <View style={styles.controlsContainer}>
@@ -82,20 +135,29 @@ export function Reader({
         </View>
 
         <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.secondaryButton} onPress={onResetReading}>
+          <TouchableOpacity 
+            style={[styles.secondaryButton, styles.animatedButton]} 
+            onPress={onResetReading}
+            activeOpacity={0.7}
+          >
             <Text style={styles.secondaryButtonText}>Reset</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.primaryButton, !isReading && styles.primaryButtonPlay]}
+            style={[styles.primaryButton, !isReading && styles.primaryButtonPlay, styles.animatedButton]}
             onPress={onToggleReading}
+            activeOpacity={0.8}
           >
             <Text style={styles.primaryButtonText}>
               {isReading ? 'Pause' : 'Play'}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={onPickDocument}>
+          <TouchableOpacity 
+            style={[styles.secondaryButton, styles.animatedButton]} 
+            onPress={onPickDocument}
+            activeOpacity={0.7}
+          >
             <Text style={styles.secondaryButtonText}>New File</Text>
           </TouchableOpacity>
         </View>
@@ -149,6 +211,31 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     letterSpacing: 0.3,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8,
+    gap: 12,
+  },
+  progressBar: {
+    flex: 1,
+    height: 6,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#4ade80',
+    borderRadius: 3,
+  },
+  progressPercentageText: {
+    color: '#4ade80',
+    fontSize: 14,
+    fontWeight: '600',
+    minWidth: 45,
+    textAlign: 'right',
   },
   wpmText: {
     color: '#fff',
@@ -247,5 +334,8 @@ const styles = StyleSheet.create({
     color: '#b0b0c0',
     fontSize: 14,
     fontWeight: '500',
+  },
+  animatedButton: {
+    // React Native handles transitions via activeOpacity automatically
   },
 });
