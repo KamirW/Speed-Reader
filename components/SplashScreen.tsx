@@ -66,7 +66,7 @@ export const SplashScreen = ({ onFinish }: SplashScreenProps) => {
                 }
             ]}>
                 <Text style={splashStyles.logo}>
-                    Speed
+                    Jump
                     <Svg width={40} height={40} viewBox="0 0 24 24" fill="none">
                         <Path
                             d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
