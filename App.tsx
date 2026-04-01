@@ -1,12 +1,23 @@
 import * as DocumentPicker from 'expo-document-picker';
 import React, { useEffect, useRef, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SplashScreen } from './components/SplashScreen';
 import { BookLibrary } from './components/BookLibrary';
 import { Reader } from './components/Reader';
 import { WelcomeScreen } from './components/WelcomeScreen';
 
+const queryClient = new QueryClient();
+
 
 export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppContent />
+    </QueryClientProvider>
+  );
+}
+
+function AppContent() {
   const [words, setWords] = useState<string[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
   const [isReading, setIsReading] = useState<boolean>(false);

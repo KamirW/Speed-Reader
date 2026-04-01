@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -10,19 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  downloadCount: number;
-  subjects: string[];
-  formats: {
-    'text/plain': string;
-    'text/plain; charset=utf-8': string;
-    'text/plain; charset=us-ascii': string;
-  };
-}
+import { useBooks, Book } from '../hooks/useBooks';
 
 interface BookLibraryProps {
   onBookSelect: (content: string, title: string) => void;
@@ -30,10 +18,10 @@ interface BookLibraryProps {
 }
 
 export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }) => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const { books, isLoading } = useBooks(searchQuery);
 
   const categories = [
     { id: 'all', name: 'All Books' },
@@ -43,59 +31,6 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
     { id: 'philosophy', name: 'Philosophy' },
     { id: 'children', name: 'Children' },
   ];
-
-  useEffect(() => {
-    fetchPopularBooks();
-  }, []);
-
-  const fetchPopularBooks = async () => {
-    try {
-      setLoading(true);
-      // Fetch popular books from Project Gutenberg
-      const response = await fetch('https://gutendex.com/books?sort=popular&mime_type=text/plain');
-      const data = await response.json();
-      
-      // Filter books that have plain text formats
-      const booksWithText = data.results.filter((book: any) => 
-        book.formats['text/plain'] || 
-        book.formats['text/plain; charset=utf-8'] || 
-        book.formats['text/plain; charset=us-ascii']
-      ).slice(0, 20); // Limit to 20 books for performance
-      
-      setBooks(booksWithText);
-    } catch (error) {
-      console.error('Error fetching books:', error);
-      Alert.alert('Error', 'Failed to load books. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const searchBooks = async () => {
-    if (!searchQuery.trim()) {
-      fetchPopularBooks();
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const response = await fetch(`https://gutendex.com/books?search=${encodeURIComponent(searchQuery)}&mime_type=text/plain`);
-      const data = await response.json();
-      
-      const booksWithText = data.results.filter((book: any) => 
-        book.formats['text/plain'] || 
-        book.formats['text/plain; charset=utf-8'] || 
-        book.formats['text/plain; charset=us-ascii']
-      );
-      
-      setBooks(booksWithText);
-    } catch (error) {
-      console.error('Error searching books:', error);
-      Alert.alert('Error', 'Failed to search books. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const downloadBook = async (book: Book) => {
     try {
@@ -119,9 +54,9 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
     }
   };
 
-  const filteredBooks = books.filter(book => {
-    const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         book.author.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredBooks = books.filter((book: Book) => {
+    const matchesSearch = book?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         book?.author?.toLowerCase().includes(searchQuery.toLowerCase());
     
     if (selectedCategory === 'all') return matchesSearch;
     
@@ -135,7 +70,7 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
     
     const keywords = categoryKeywords[selectedCategory] || [];
     const matchesCategory = keywords.some(keyword => 
-      book.subjects.some(subject => subject.toLowerCase().includes(keyword))
+      book?.subjects?.some((subject: string) => subject.toLowerCase().includes(keyword))
     );
     
     return matchesSearch && matchesCategory;
@@ -157,14 +92,14 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
           placeholderTextColor="#888"
           value={searchQuery}
           onChangeText={setSearchQuery}
-          onSubmitEditing={searchBooks}
+          onSubmitEditing={() => {}}
         />
-        <TouchableOpacity style={styles.searchButton} onPress={searchBooks}>
+        <TouchableOpacity style={styles.searchButton} onPress={() => {}}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryContainer}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryContainer} contentContainerStyle={styles.categoryContent}>
         {categories.map(category => (
           <TouchableOpacity
             key={category.id}
@@ -184,7 +119,7 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
         ))}
       </ScrollView>
 
-      {loading ? (
+      {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#fff" />
           <Text style={styles.loadingText}>Loading books...</Text>
@@ -196,11 +131,10 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
               <Text style={styles.noBooksText}>No books found</Text>
             </View>
           ) : (
-            filteredBooks.map(book => (
-              <TouchableOpacity
+            filteredBooks.map((book: Book) => (
+              <View
                 key={book.id}
                 style={styles.bookItem}
-                onPress={() => downloadBook(book)}
               >
                 <View style={styles.bookInfo}>
                   <Text style={styles.bookTitle}>{book.title}</Text>
@@ -214,10 +148,10 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
                     </Text>
                   )}
                 </View>
-                <View style={styles.downloadButton}>
+                <TouchableOpacity style={styles.downloadButton} onPress={() => downloadBook(book)}>
                   <Text style={styles.downloadButtonText}>Read</Text>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             ))
           )}
         </ScrollView>
@@ -233,8 +167,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 20,
     paddingTop: 50,
+    paddingBottom: 20,
   },
   backButton: {
     marginRight: 15,
@@ -251,13 +186,14 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     paddingHorizontal: 20,
-    marginBottom: 15,
+    height: 50,
+    marginBottom: 20,
   },
   searchInput: {
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 10,
-    padding: 12,
+    padding: 8,
     color: '#fff',
     fontSize: 16,
     marginRight: 10,
@@ -274,14 +210,23 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     paddingHorizontal: 20,
+    height: 25,
+    maxHeight: 25,
+    marginTop: -5,
     marginBottom: 20,
+  },
+  categoryContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 0,
   },
   categoryButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     marginRight: 10,
+    alignSelf: 'center',
   },
   categoryButtonActive: {
     backgroundColor: '#4CAF50',
@@ -307,6 +252,7 @@ const styles = StyleSheet.create({
   booksContainer: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 5,
   },
   bookItem: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
