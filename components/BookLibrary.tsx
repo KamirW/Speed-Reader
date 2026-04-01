@@ -19,9 +19,20 @@ interface BookLibraryProps {
 
 export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [actualSearchQuery, setActualSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const { books, isLoading } = useBooks(searchQuery);
+  const { books, isLoading } = useBooks(''); // Fetch all books once and cache them
+
+  const handleClear = () => {
+    setActualSearchQuery('');
+    setSearchQuery('');
+  };
+
+  const handleSearch = () => {
+    // Don't trigger new API call, just update search query for local filtering
+    setActualSearchQuery(searchQuery);
+  };
 
   const categories = [
     { id: 'all', name: 'All Books' },
@@ -35,19 +46,19 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
   const downloadBook = async (book: Book) => {
     try {
       // Find the best text format
-      let textUrl = book.formats['text/plain'] || 
-                   book.formats['text/plain; charset=utf-8'] || 
-                   book.formats['text/plain; charset=us-ascii'];
+      let textUrl = book.formats['text/plain'] ||
+        book.formats['text/plain; charset=utf-8'] ||
+        book.formats['text/plain; charset=us-ascii'];
 
       if (!textUrl) {
         Alert.alert('Error', 'Text format not available for this book.');
         return;
       }
 
-      const response = await fetch(textUrl);
-      const textContent = await response.text();
-      
+      const textContent = await fetch(textUrl).then(res => res.text());
+
       onBookSelect(textContent, `${book.title} by ${book.author}`);
+
     } catch (error) {
       console.error('Error downloading book:', error);
       Alert.alert('Error', 'Failed to download book. Please try again.');
@@ -55,11 +66,11 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
   };
 
   const filteredBooks = books.filter((book: Book) => {
-    const matchesSearch = book?.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         book?.author?.toLowerCase().includes(searchQuery.toLowerCase());
-    
+    const matchesSearch = book?.title?.toLowerCase().includes(actualSearchQuery.toLowerCase()) ||
+                         book?.author?.toLowerCase().includes(actualSearchQuery.toLowerCase());
+
     if (selectedCategory === 'all') return matchesSearch;
-    
+
     const categoryKeywords: { [key: string]: string[] } = {
       fiction: ['fiction', 'novel', 'story', 'tale'],
       science: ['science', 'scientific', 'physics', 'chemistry', 'biology'],
@@ -67,17 +78,18 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
       philosophy: ['philosophy', 'philosophical', 'ethics', 'logic'],
       children: ['children', 'child', 'juvenile', 'fairy', 'tale'],
     };
-    
+
     const keywords = categoryKeywords[selectedCategory] || [];
-    const matchesCategory = keywords.some(keyword => 
+    const matchesCategory = keywords.some(keyword =>
       book?.subjects?.some((subject: string) => subject.toLowerCase().includes(keyword))
     );
-    
+
     return matchesSearch && matchesCategory;
   });
 
   return (
     <LinearGradient colors={['#1a1a2e', '#0f0f1e', '#16213e']} style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <Text style={styles.backButtonText}>← Back</Text>
@@ -85,20 +97,29 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
         <Text style={styles.title}>📚 Free Library</Text>
       </View>
 
+      {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search books or authors..."
-          placeholderTextColor="#888"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onSubmitEditing={() => {}}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={() => {}}>
+        <View style={styles.searchInputContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search books or authors..."
+            placeholderTextColor="#888"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onSubmitEditing={() => { }}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity style={styles.clearButtonInside} onPress={handleClear}>
+              <Text style={styles.clearButtonText}>✕</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
 
+      {/* Category Filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryContainer} contentContainerStyle={styles.categoryContent}>
         {categories.map(category => (
           <TouchableOpacity
@@ -119,7 +140,8 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
         ))}
       </ScrollView>
 
-      {isLoading ? (
+      {/* Books List */}
+      { isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#fff" />
           <Text style={styles.loadingText}>Loading books...</Text>
@@ -189,24 +211,56 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 20,
   },
+  searchInputContainer: {
+    flex: 1,
+    position: 'relative',
+  },
   searchInput: {
     flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 10,
     padding: 8,
+    paddingLeft: 12,
+    paddingRight: 45, // Make room for clear button
     color: '#fff',
     fontSize: 16,
-    marginRight: 10,
+  },
+  clearButtonInside: {
+    position: 'absolute',
+    right: 12,
+    top: '50%',
+    marginTop: -14,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   searchButton: {
     backgroundColor: '#4CAF50',
     borderRadius: 10,
     paddingHorizontal: 20,
+    paddingVertical: 8,
     justifyContent: 'center',
+    marginLeft: 15, // Better spacing from input
   },
   searchButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  clearButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    marginLeft: 5,
+  },
+  clearButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
   categoryContainer: {
     paddingHorizontal: 20,
