@@ -1,14 +1,16 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  ListRenderItem,
 } from 'react-native';
 import { useBooks, Book } from '../hooks/useBooks';
 
@@ -21,8 +23,9 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
   const [searchQuery, setSearchQuery] = useState('');
   const [actualSearchQuery, setActualSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [downloadingBookId, setDownloadingBookId] = useState<number | null>(null);
 
-  const { books, isLoading } = useBooks(''); // Fetch all books once and cache them
+  const { books, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useBooks(''); // Fetch all books once and cache them
 
   const handleClear = () => {
     setActualSearchQuery('');
@@ -43,8 +46,10 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
     { id: 'children', name: 'Children' },
   ];
 
-  const downloadBook = async (book: Book) => {
+  const downloadBook = useCallback(async (book: Book) => {
     try {
+      setDownloadingBookId(book.id);
+      
       // Find the best text format
       let textUrl = book.formats['text/plain'] ||
         book.formats['text/plain; charset=utf-8'] ||
@@ -62,30 +67,80 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
     } catch (error) {
       console.error('Error downloading book:', error);
       Alert.alert('Error', 'Failed to download book. Please try again.');
+    } finally {
+      setDownloadingBookId(null);
     }
-  };
+  }, [onBookSelect]);
 
-  const filteredBooks = books.filter((book: Book) => {
-    const matchesSearch = book?.title?.toLowerCase().includes(actualSearchQuery.toLowerCase()) ||
-                         book?.author?.toLowerCase().includes(actualSearchQuery.toLowerCase());
+  const filteredBooks = useMemo(() => {
+    return books.filter((book: Book) => {
+      const matchesSearch = book?.title?.toLowerCase().includes(actualSearchQuery.toLowerCase()) ||
+                           book?.author?.toLowerCase().includes(actualSearchQuery.toLowerCase());
 
-    if (selectedCategory === 'all') return matchesSearch;
+      if (selectedCategory === 'all') return matchesSearch;
 
-    const categoryKeywords: { [key: string]: string[] } = {
-      fiction: ['fiction', 'novel', 'story', 'tale'],
-      science: ['science', 'scientific', 'physics', 'chemistry', 'biology'],
-      history: ['history', 'historical', 'ancient', 'war'],
-      philosophy: ['philosophy', 'philosophical', 'ethics', 'logic'],
-      children: ['children', 'child', 'juvenile', 'fairy', 'tale'],
-    };
+      const categoryKeywords: { [key: string]: string[] } = {
+        fiction: ['fiction', 'novel', 'story', 'tale'],
+        science: ['science', 'scientific', 'physics', 'chemistry', 'biology'],
+        history: ['history', 'historical', 'ancient', 'war'],
+        philosophy: ['philosophy', 'philosophical', 'ethics', 'logic'],
+        children: ['children', 'child', 'juvenile', 'fairy', 'tale'],
+      };
 
-    const keywords = categoryKeywords[selectedCategory] || [];
-    const matchesCategory = keywords.some(keyword =>
-      book?.subjects?.some((subject: string) => subject.toLowerCase().includes(keyword))
+      const keywords = categoryKeywords[selectedCategory] || [];
+      const matchesCategory = keywords.some(keyword =>
+        book?.subjects?.some((subject: string) => subject.toLowerCase().includes(keyword))
+      );
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [books, actualSearchQuery, selectedCategory]);
+
+  const renderBookItem: ListRenderItem<Book> = useCallback(({ item: book }) => (
+    <View style={styles.bookItem}>
+      <View style={styles.bookInfo}>
+        <Text style={styles.bookTitle}>{book.title}</Text>
+        <Text style={styles.bookAuthor}>by {book.author}</Text>
+        <Text style={styles.bookMeta}>
+          📖 {book.downloadCount?.toLocaleString() || '0'} reads
+        </Text>
+        {book.subjects.length > 0 && (
+          <Text style={styles.bookSubjects} numberOfLines={1}>
+            {book.subjects.slice(0, 3).join(', ')}
+          </Text>
+        )}
+      </View>
+      <TouchableOpacity 
+        style={[styles.downloadButton, downloadingBookId === book.id && styles.downloadButtonDisabled]} 
+        onPress={() => downloadBook(book)}
+        disabled={downloadingBookId === book.id}
+      >
+        {downloadingBookId === book.id ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.downloadButtonText}>Read</Text>
+        )}
+      </TouchableOpacity>
+    </View>
+  ), [downloadBook, downloadingBookId]);
+
+  const keyExtractor = useCallback((item: Book) => item.id.toString(), []);
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const renderFooter = useCallback(() => {
+    if (!isFetchingNextPage) return null;
+    return (
+      <View style={styles.footerLoading}>
+        <ActivityIndicator size="small" color="#fff" />
+        <Text style={styles.footerLoadingText}>Loading more books...</Text>
+      </View>
     );
-
-    return matchesSearch && matchesCategory;
-  });
+  }, [isFetchingNextPage]);
 
   return (
     <LinearGradient colors={['#1a1a2e', '#0f0f1e', '#16213e']} style={styles.container}>
@@ -147,36 +202,32 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
           <Text style={styles.loadingText}>Loading books...</Text>
         </View>
       ) : (
-        <ScrollView style={styles.booksContainer} showsVerticalScrollIndicator={false}>
-          {filteredBooks.length === 0 ? (
+        <FlatList
+          style={styles.booksContainer}
+          data={filteredBooks}
+          renderItem={renderBookItem}
+          keyExtractor={keyExtractor}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.booksListContent}
+          ListEmptyComponent={
             <View style={styles.noBooksContainer}>
               <Text style={styles.noBooksText}>No books found</Text>
             </View>
-          ) : (
-            filteredBooks.map((book: Book) => (
-              <View
-                key={book.id}
-                style={styles.bookItem}
-              >
-                <View style={styles.bookInfo}>
-                  <Text style={styles.bookTitle}>{book.title}</Text>
-                  <Text style={styles.bookAuthor}>by {book.author}</Text>
-                  <Text style={styles.bookMeta}>
-                    📖 {book.downloadCount?.toLocaleString() || '0'} reads
-                  </Text>
-                  {book.subjects.length > 0 && (
-                    <Text style={styles.bookSubjects} numberOfLines={1}>
-                      {book.subjects.slice(0, 3).join(', ')}
-                    </Text>
-                  )}
-                </View>
-                <TouchableOpacity style={styles.downloadButton} onPress={() => downloadBook(book)}>
-                  <Text style={styles.downloadButtonText}>Read</Text>
-                </TouchableOpacity>
-              </View>
-            ))
-          )}
-        </ScrollView>
+          }
+          ListFooterComponent={renderFooter}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={10}
+          updateCellsBatchingPeriod={50}
+          initialNumToRender={10}
+          windowSize={10}
+          getItemLayout={(data, index) => ({
+            length: 100, // Approximate item height
+            offset: 100 * index,
+            index,
+          })}
+        />
       )}
     </LinearGradient>
   );
@@ -305,6 +356,8 @@ const styles = StyleSheet.create({
   },
   booksContainer: {
     flex: 1,
+  },
+  booksListContent: {
     paddingHorizontal: 20,
     paddingTop: 5,
   },
@@ -345,6 +398,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 8,
+    minWidth: 60,
+    alignItems: 'center',
+  },
+  downloadButtonDisabled: {
+    backgroundColor: '#666',
   },
   downloadButtonText: {
     color: '#fff',
@@ -359,5 +417,16 @@ const styles = StyleSheet.create({
   noBooksText: {
     color: '#fff',
     fontSize: 18,
+  },
+  footerLoading: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  footerLoadingText: {
+    color: '#fff',
+    marginLeft: 10,
+    fontSize: 14,
   },
 });
