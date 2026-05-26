@@ -12,7 +12,7 @@ import {
   View,
   ListRenderItem,
 } from 'react-native';
-import { useBooks, Book } from '../hooks/useBooks';
+import { useLocalBooks, Book } from '../hooks/useLocalBooks';
 
 interface BookLibraryProps {
   onBookSelect: (content: string, title: string) => void;
@@ -25,7 +25,7 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [downloadingBookId, setDownloadingBookId] = useState<number | null>(null);
 
-  const { books, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useBooks(''); // Fetch all books once and cache them
+  const { books, isLoading, loadBookContent } = useLocalBooks();
 
   const handleClear = () => {
     setActualSearchQuery('');
@@ -49,28 +49,18 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
   const downloadBook = useCallback(async (book: Book) => {
     try {
       setDownloadingBookId(book.id);
-      
-      // Find the best text format
-      let textUrl = book.formats['text/plain'] ||
-        book.formats['text/plain; charset=utf-8'] ||
-        book.formats['text/plain; charset=us-ascii'];
 
-      if (!textUrl) {
-        Alert.alert('Error', 'Text format not available for this book.');
-        return;
-      }
-
-      const textContent = await fetch(textUrl).then(res => res.text());
+      const textContent = await loadBookContent(book);
 
       onBookSelect(textContent, `${book.title} by ${book.author}`);
 
     } catch (error) {
-      console.error('Error downloading book:', error);
-      Alert.alert('Error', 'Failed to download book. Please try again.');
+      console.error('Error loading book:', error);
+      Alert.alert('Error', 'Failed to load book. Please try again.');
     } finally {
       setDownloadingBookId(null);
     }
-  }, [onBookSelect]);
+  }, [onBookSelect, loadBookContent]);
 
   const filteredBooks = useMemo(() => {
     return books.filter((book: Book) => {
@@ -125,22 +115,6 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
   ), [downloadBook, downloadingBookId]);
 
   const keyExtractor = useCallback((item: Book) => item.id.toString(), []);
-
-  const handleLoadMore = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const renderFooter = useCallback(() => {
-    if (!isFetchingNextPage) return null;
-    return (
-      <View style={styles.footerLoading}>
-        <ActivityIndicator size="small" color="#fff" />
-        <Text style={styles.footerLoadingText}>Loading more books...</Text>
-      </View>
-    );
-  }, [isFetchingNextPage]);
 
   return (
     <LinearGradient colors={['#1a1a2e', '#0f0f1e', '#16213e']} style={styles.container}>
@@ -214,19 +188,6 @@ export const BookLibrary: React.FC<BookLibraryProps> = ({ onBookSelect, onBack }
               <Text style={styles.noBooksText}>No books found</Text>
             </View>
           }
-          ListFooterComponent={renderFooter}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          removeClippedSubviews={true}
-          maxToRenderPerBatch={10}
-          updateCellsBatchingPeriod={50}
-          initialNumToRender={10}
-          windowSize={10}
-          getItemLayout={(data, index) => ({
-            length: 100, // Approximate item height
-            offset: 100 * index,
-            index,
-          })}
         />
       )}
     </LinearGradient>
@@ -417,16 +378,5 @@ const styles = StyleSheet.create({
   noBooksText: {
     color: '#fff',
     fontSize: 18,
-  },
-  footerLoading: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-  footerLoadingText: {
-    color: '#fff',
-    marginLeft: 10,
-    fontSize: 14,
   },
 });

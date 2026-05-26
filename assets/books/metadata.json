@@ -1,0 +1,1065 @@
+[
+  {
+    "id": 11,
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "subjects": [
+      "Fantasy",
+      "Children's"
+    ],
+    "filename": "11.txt",
+    "downloadCount": 18229
+  },
+  {
+    "id": 12,
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "subjects": [
+      "Fiction",
+      "Philosophy"
+    ],
+    "filename": "12.txt",
+    "downloadCount": 84460
+  },
+  {
+    "id": 25,
+    "title": "Notes from the Underground",
+    "author": "Fyodor Dostoyevsky",
+    "subjects": [
+      "Fiction",
+      "Philosophy"
+    ],
+    "filename": "25.txt",
+    "downloadCount": 80675
+  },
+  {
+    "id": 74,
+    "title": "The Adventures of Tom Sawyer",
+    "author": "Mark Twain",
+    "subjects": [
+      "Fiction",
+      "Children's"
+    ],
+    "filename": "74.txt",
+    "downloadCount": 41749
+  },
+  {
+    "id": 1342,
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "subjects": [
+      "Fiction",
+      "Romance"
+    ],
+    "filename": "1342.txt",
+    "downloadCount": 21453
+  },
+  {
+    "id": 1661,
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "subjects": [
+      "Fiction",
+      "Mystery"
+    ],
+    "filename": "1661.txt",
+    "downloadCount": 108731
+  },
+  {
+    "id": 174,
+    "title": "The Art of War",
+    "author": "Sun Tzu",
+    "subjects": [
+      "Philosophy",
+      "Military"
+    ],
+    "filename": "174.txt",
+    "downloadCount": 40551
+  },
+  {
+    "id": 23,
+    "title": "Moby Dick",
+    "author": "Herman Melville",
+    "subjects": [
+      "Fiction",
+      "Adventure"
+    ],
+    "filename": "23.txt",
+    "downloadCount": 22802
+  },
+  {
+    "id": 2701,
+    "title": "Moby Dick; Or, The Whale",
+    "author": "Herman Melville",
+    "subjects": [
+      "Fiction",
+      "Adventure"
+    ],
+    "filename": "2701.txt",
+    "downloadCount": 12585
+  },
+  {
+    "id": 345,
+    "title": "The Divine Comedy",
+    "author": "Dante Alighieri",
+    "subjects": [
+      "Poetry",
+      "Philosophy"
+    ],
+    "filename": "345.txt",
+    "downloadCount": 52391
+  },
+  {
+    "id": 43,
+    "title": "The Strange Case of Dr. Jekyll and Mr. Hyde",
+    "author": "Robert Louis Stevenson",
+    "subjects": [
+      "Fiction",
+      "Horror"
+    ],
+    "filename": "43.txt",
+    "downloadCount": 17481
+  },
+  {
+    "id": 84,
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "subjects": [
+      "Fiction",
+      "Horror"
+    ],
+    "filename": "84.txt",
+    "downloadCount": 79630
+  },
+  {
+    "id": 98,
+    "title": "A Tale of Two Cities",
+    "author": "Charles Dickens",
+    "subjects": [
+      "Fiction",
+      "History"
+    ],
+    "filename": "98.txt",
+    "downloadCount": 99927
+  },
+  {
+    "id": 108,
+    "title": "The Legend of Sleepy Hollow",
+    "author": "Washington Irving",
+    "subjects": [
+      "Fiction",
+      "Horror"
+    ],
+    "filename": "108.txt",
+    "downloadCount": 22263
+  },
+  {
+    "id": 1260,
+    "title": "The Adventures of Huckleberry Finn",
+    "author": "Mark Twain",
+    "subjects": [
+      "Fiction",
+      "Children's"
+    ],
+    "filename": "1260.txt",
+    "downloadCount": 70473
+  },
+  {
+    "id": 134,
+    "title": "The Nuclear War",
+    "author": "Various",
+    "subjects": [
+      "Science",
+      "History"
+    ],
+    "filename": "134.txt",
+    "downloadCount": 62929
+  },
+  {
+    "id": 1400,
+    "title": "Great Expectations",
+    "author": "Charles Dickens",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "1400.txt",
+    "downloadCount": 37246
+  },
+  {
+    "id": 1513,
+    "title": "Romeo and Juliet",
+    "author": "William Shakespeare",
+    "subjects": [
+      "Fiction",
+      "Drama"
+    ],
+    "filename": "1513.txt",
+    "downloadCount": 70543
+  },
+  {
+    "id": 163,
+    "title": "The Vicar of Wakefield",
+    "author": "Oliver Goldsmith",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "163.txt",
+    "downloadCount": 43794
+  },
+  {
+    "id": 1952,
+    "title": "The Yellow Wallpaper",
+    "author": "Charlotte Perkins Gilman",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "1952.txt",
+    "downloadCount": 33763
+  },
+  {
+    "id": 204,
+    "title": "The Souls of Black Folk",
+    "author": "W.E.B. Du Bois",
+    "subjects": [
+      "Non-fiction",
+      "History"
+    ],
+    "filename": "204.txt",
+    "downloadCount": 45847
+  },
+  {
+    "id": 215,
+    "title": "Heart of Darkness",
+    "author": "Joseph Conrad",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "215.txt",
+    "downloadCount": 33337
+  },
+  {
+    "id": 236,
+    "title": "The Life and Adventures of Robinson Crusoe",
+    "author": "Daniel Defoe",
+    "subjects": [
+      "Fiction",
+      "Adventure"
+    ],
+    "filename": "236.txt",
+    "downloadCount": 81688
+  },
+  {
+    "id": 2600,
+    "title": "War and Peace",
+    "author": "Leo Tolstoy",
+    "subjects": [
+      "Fiction",
+      "History"
+    ],
+    "filename": "2600.txt",
+    "downloadCount": 73257
+  },
+  {
+    "id": 27,
+    "title": "The Iliad",
+    "author": "Homer",
+    "subjects": [
+      "Poetry",
+      "History"
+    ],
+    "filename": "27.txt",
+    "downloadCount": 63347
+  },
+  {
+    "id": 2852,
+    "title": "The Metamorphosis",
+    "author": "Franz Kafka",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "2852.txt",
+    "downloadCount": 66033
+  },
+  {
+    "id": 30,
+    "title": "The Odyssey",
+    "author": "Homer",
+    "subjects": [
+      "Poetry",
+      "History"
+    ],
+    "filename": "30.txt",
+    "downloadCount": 41083
+  },
+  {
+    "id": 3207,
+    "title": "The Complete Works of William Shakespeare",
+    "author": "William Shakespeare",
+    "subjects": [
+      "Poetry",
+      "Drama"
+    ],
+    "filename": "3207.txt",
+    "downloadCount": 21248
+  },
+  {
+    "id": 328,
+    "title": "The Adventures of Roderick Random",
+    "author": "Tobias Smollett",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "328.txt",
+    "downloadCount": 78422
+  },
+  {
+    "id": 33,
+    "title": "The Prince",
+    "author": "Niccolò Machiavelli",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "33.txt",
+    "downloadCount": 99156
+  },
+  {
+    "id": 34,
+    "title": "The Souls of Black Folk",
+    "author": "W.E.B. Du Bois",
+    "subjects": [
+      "Non-fiction",
+      "History"
+    ],
+    "filename": "34.txt",
+    "downloadCount": 81716
+  },
+  {
+    "id": 36,
+    "title": "The Works of Edgar Allan Poe",
+    "author": "Edgar Allan Poe",
+    "subjects": [
+      "Fiction",
+      "Poetry"
+    ],
+    "filename": "36.txt",
+    "downloadCount": 71939
+  },
+  {
+    "id": 371,
+    "title": "Ulysses",
+    "author": "James Joyce",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "371.txt",
+    "downloadCount": 108133
+  },
+  {
+    "id": 376,
+    "title": "The Works of Charles Darwin",
+    "author": "Charles Darwin",
+    "subjects": [
+      "Science",
+      "Non-fiction"
+    ],
+    "filename": "376.txt",
+    "downloadCount": 27777
+  },
+  {
+    "id": 41,
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "subjects": [
+      "Fiction",
+      "Mystery"
+    ],
+    "filename": "41.txt",
+    "downloadCount": 81359
+  },
+  {
+    "id": 423,
+    "title": "Essays",
+    "author": "Michel de Montaigne",
+    "subjects": [
+      "Philosophy",
+      "Non-fiction"
+    ],
+    "filename": "423.txt",
+    "downloadCount": 24574
+  },
+  {
+    "id": 434,
+    "title": "The Narrative of the Life of Frederick Douglass",
+    "author": "Frederick Douglass",
+    "subjects": [
+      "Non-fiction",
+      "History"
+    ],
+    "filename": "434.txt",
+    "downloadCount": 82962
+  },
+  {
+    "id": 44,
+    "title": "The Adventures of Tom Sawyer",
+    "author": "Mark Twain",
+    "subjects": [
+      "Fiction",
+      "Children's"
+    ],
+    "filename": "44.txt",
+    "downloadCount": 23364
+  },
+  {
+    "id": 45,
+    "title": "The Adventures of Huckleberry Finn",
+    "author": "Mark Twain",
+    "subjects": [
+      "Fiction",
+      "Children's"
+    ],
+    "filename": "45.txt",
+    "downloadCount": 40553
+  },
+  {
+    "id": 46,
+    "title": "The Scarlet Letter",
+    "author": "Nathaniel Hawthorne",
+    "subjects": [
+      "Fiction"
+    ],
+    "filename": "46.txt",
+    "downloadCount": 90334
+  },
+  {
+    "id": 521,
+    "title": "The Republic",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "521.txt",
+    "downloadCount": 85730
+  },
+  {
+    "id": 522,
+    "title": "The Apology",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "522.txt",
+    "downloadCount": 68654
+  },
+  {
+    "id": 523,
+    "title": "Crito",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "523.txt",
+    "downloadCount": 72600
+  },
+  {
+    "id": 524,
+    "title": "Phaedo",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "524.txt",
+    "downloadCount": 14313
+  },
+  {
+    "id": 525,
+    "title": "The Symposium",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "525.txt",
+    "downloadCount": 55437
+  },
+  {
+    "id": 526,
+    "title": "The Nicomachean Ethics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "526.txt",
+    "downloadCount": 77531
+  },
+  {
+    "id": 527,
+    "title": "Politics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "527.txt",
+    "downloadCount": 46094
+  },
+  {
+    "id": 528,
+    "title": "The Poetics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Literary"
+    ],
+    "filename": "528.txt",
+    "downloadCount": 24291
+  },
+  {
+    "id": 529,
+    "title": "The Constitution of Athens",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "529.txt",
+    "downloadCount": 77694
+  },
+  {
+    "id": 530,
+    "title": "The Categories",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "530.txt",
+    "downloadCount": 85951
+  },
+  {
+    "id": 531,
+    "title": "On Interpretation",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "531.txt",
+    "downloadCount": 80488
+  },
+  {
+    "id": 532,
+    "title": "Prior Analytics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "532.txt",
+    "downloadCount": 73691
+  },
+  {
+    "id": 533,
+    "title": "Posterior Analytics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "533.txt",
+    "downloadCount": 74503
+  },
+  {
+    "id": 534,
+    "title": "Topics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "534.txt",
+    "downloadCount": 92567
+  },
+  {
+    "id": 535,
+    "title": "On Sophistical Refutations",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "535.txt",
+    "downloadCount": 53212
+  },
+  {
+    "id": 536,
+    "title": "Rhetoric",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "536.txt",
+    "downloadCount": 52625
+  },
+  {
+    "id": 537,
+    "title": "The Art of Rhetoric",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "537.txt",
+    "downloadCount": 39253
+  },
+  {
+    "id": 538,
+    "title": "Physics",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "538.txt",
+    "downloadCount": 67329
+  },
+  {
+    "id": 539,
+    "title": "On the Heavens",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "539.txt",
+    "downloadCount": 81472
+  },
+  {
+    "id": 540,
+    "title": "On Generation and Corruption",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "540.txt",
+    "downloadCount": 51657
+  },
+  {
+    "id": 541,
+    "title": "Meteorology",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "541.txt",
+    "downloadCount": 37832
+  },
+  {
+    "id": 542,
+    "title": "On the Soul",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "542.txt",
+    "downloadCount": 82056
+  },
+  {
+    "id": 543,
+    "title": "Parva Naturalia",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "543.txt",
+    "downloadCount": 47212
+  },
+  {
+    "id": 544,
+    "title": "The History of Animals",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "544.txt",
+    "downloadCount": 82410
+  },
+  {
+    "id": 545,
+    "title": "On the Parts of Animals",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "545.txt",
+    "downloadCount": 84164
+  },
+  {
+    "id": 546,
+    "title": "On the Motion of Animals",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "546.txt",
+    "downloadCount": 104549
+  },
+  {
+    "id": 547,
+    "title": "On the Gait of Animals",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "547.txt",
+    "downloadCount": 11719
+  },
+  {
+    "id": 548,
+    "title": "On the Generation of Animals",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "548.txt",
+    "downloadCount": 91938
+  },
+  {
+    "id": 549,
+    "title": "Problems",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "549.txt",
+    "downloadCount": 19945
+  },
+  {
+    "id": 550,
+    "title": "Mechanical Problems",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "550.txt",
+    "downloadCount": 59304
+  },
+  {
+    "id": 551,
+    "title": "On Indivisible Lines",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "551.txt",
+    "downloadCount": 77313
+  },
+  {
+    "id": 552,
+    "title": "On Plants",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "552.txt",
+    "downloadCount": 102328
+  },
+  {
+    "id": 553,
+    "title": "On Marvellous Things Heard",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "553.txt",
+    "downloadCount": 65109
+  },
+  {
+    "id": 554,
+    "title": "On the Soul",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "554.txt",
+    "downloadCount": 24515
+  },
+  {
+    "id": 555,
+    "title": "Physiognomonics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "555.txt",
+    "downloadCount": 88362
+  },
+  {
+    "id": 556,
+    "title": "On Colors",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "556.txt",
+    "downloadCount": 12802
+  },
+  {
+    "id": 557,
+    "title": "On Things Heard",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "557.txt",
+    "downloadCount": 89726
+  },
+  {
+    "id": 558,
+    "title": "On the Cosmos",
+    "author": "Aristotle",
+    "subjects": [
+      "Science",
+      "Philosophy"
+    ],
+    "filename": "558.txt",
+    "downloadCount": 45058
+  },
+  {
+    "id": 559,
+    "title": "Oeconomicus",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "559.txt",
+    "downloadCount": 54870
+  },
+  {
+    "id": 560,
+    "title": "The Athenian Constitution",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "560.txt",
+    "downloadCount": 57398
+  },
+  {
+    "id": 561,
+    "title": "Rhetoric to Alexander",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "561.txt",
+    "downloadCount": 28559
+  },
+  {
+    "id": 562,
+    "title": "Metaphysics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "562.txt",
+    "downloadCount": 89364
+  },
+  {
+    "id": 563,
+    "title": "The Works of Aristotle",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Science"
+    ],
+    "filename": "563.txt",
+    "downloadCount": 53777
+  },
+  {
+    "id": 564,
+    "title": "The Organon",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "564.txt",
+    "downloadCount": 79892
+  },
+  {
+    "id": 565,
+    "title": "Categories",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "565.txt",
+    "downloadCount": 106678
+  },
+  {
+    "id": 566,
+    "title": "On Interpretation",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "566.txt",
+    "downloadCount": 90084
+  },
+  {
+    "id": 567,
+    "title": "Prior Analytics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "567.txt",
+    "downloadCount": 44960
+  },
+  {
+    "id": 568,
+    "title": "Posterior Analytics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "568.txt",
+    "downloadCount": 92336
+  },
+  {
+    "id": 569,
+    "title": "Topics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "569.txt",
+    "downloadCount": 94814
+  },
+  {
+    "id": 570,
+    "title": "On Sophistical Refutations",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "570.txt",
+    "downloadCount": 66767
+  },
+  {
+    "id": 571,
+    "title": "Rhetoric",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "571.txt",
+    "downloadCount": 36417
+  },
+  {
+    "id": 572,
+    "title": "Poetics",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Literary"
+    ],
+    "filename": "572.txt",
+    "downloadCount": 88450
+  },
+  {
+    "id": 573,
+    "title": "The Constitution of Athens",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "573.txt",
+    "downloadCount": 68767
+  },
+  {
+    "id": 574,
+    "title": "Fragments",
+    "author": "Aristotle",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "574.txt",
+    "downloadCount": 73169
+  },
+  {
+    "id": 575,
+    "title": "The Works of Plato",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "575.txt",
+    "downloadCount": 97201
+  },
+  {
+    "id": 576,
+    "title": "The Republic",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy",
+      "Political"
+    ],
+    "filename": "576.txt",
+    "downloadCount": 78077
+  },
+  {
+    "id": 577,
+    "title": "The Apology",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "577.txt",
+    "downloadCount": 62586
+  },
+  {
+    "id": 578,
+    "title": "Crito",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "578.txt",
+    "downloadCount": 79715
+  },
+  {
+    "id": 579,
+    "title": "Phaedo",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "579.txt",
+    "downloadCount": 14426
+  },
+  {
+    "id": 580,
+    "title": "The Symposium",
+    "author": "Plato",
+    "subjects": [
+      "Philosophy"
+    ],
+    "filename": "580.txt",
+    "downloadCount": 69770
+  }
+]
