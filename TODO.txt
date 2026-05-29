@@ -1,0 +1,13 @@
+* Make it so each chapter is indivually selectable so that the reader doesn't read out the chapters while in reader mode.
+    * Update the UI to account for the first point.
+
+* Update the UI for a less 'clunky feeling'
+    * Maybe use a different color scheme
+    * Maybe add accessibility features
+    * Maybe play around with the Title Screen text
+    * Add an onbaording process for the user
+    * Maybe play around with the general layout of the app
+
+* Maybe add an image to each book in the Book selection list
+    * Maybe use the cover image from the book
+    * Maybe add a placeholder image if no cover image is available
