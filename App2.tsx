@@ -8,6 +8,7 @@ import { ChapterListScreen } from './OVERHAUL/pages/ChapterList';
 import { ReaderScreen } from './OVERHAUL/pages/Reader';
 import { useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { DataProvider } from './OVERHAUL/hooks/useData';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const ONBOARDING_COMPLETE_KEY = 'onboarding_complete';
@@ -22,6 +23,9 @@ function App() {
   const checkOnboardingStatus = async () => {
     try {
       const value = await SecureStore.getItemAsync(ONBOARDING_COMPLETE_KEY);
+
+      // ******* DEV SETTING - COMMENT OUT FOR PRODUCTION *******
+      // await SecureStore.setItemAsync(ONBOARDING_COMPLETE_KEY, 'false');
       setIsOnboardingComplete(value === 'true');
     } catch (error) {
       console.error('Error checking onboarding status:', error);
@@ -34,19 +38,21 @@ function App() {
   }
 
   return (
-    <SafeAreaProvider>
-        <NavigationContainer>
-            <Stack.Navigator 
-              screenOptions={{ headerShown: false }}
-              initialRouteName={isOnboardingComplete ? 'MainTabs' : 'Onboarding'}
-            >
-                <Stack.Screen name="Onboarding" component={Onboarding} />
-                <Stack.Screen name="MainTabs" component={MainTabs} />
-                <Stack.Screen name="ChapterList" component={ChapterListScreen} />
-                <Stack.Screen name="Reader" component={ReaderScreen} />
-            </Stack.Navigator>
-        </NavigationContainer>
-    </SafeAreaProvider>
+    <DataProvider>
+      <SafeAreaProvider>
+          <NavigationContainer>
+              <Stack.Navigator 
+                screenOptions={{ headerShown: false }}
+                initialRouteName={isOnboardingComplete ? 'MainTabs' : 'Onboarding'}
+              >
+                  <Stack.Screen name="Onboarding" component={Onboarding} />
+                  <Stack.Screen name="MainTabs" component={MainTabs} />
+                  <Stack.Screen name="ChapterList" component={ChapterListScreen} />
+                  <Stack.Screen name="Reader" component={ReaderScreen} />
+              </Stack.Navigator>
+          </NavigationContainer>
+      </SafeAreaProvider>
+    </DataProvider>
   )
 }
 

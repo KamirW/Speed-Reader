@@ -68,7 +68,7 @@ export function ChapterListScreen() {
             <TouchableOpacity
               key={chapter.id}
               style={styles.chapterCard}
-              onPress={() => navigation.navigate('Reader', { bookId, chapterId: chapter.id })}
+              onPress={() => navigation.navigate('Reader', { bookId, chapterId: chapter.id, from: 'Books' })}
               activeOpacity={0.8}
             >
               <View style={styles.chapterIcon}>

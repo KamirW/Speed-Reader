@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, Library } from 'lucide-react-native';
+import { Home, Library, Upload } from 'lucide-react-native';
 import { HomeScreen } from '../pages/Home';
 import { LibraryScreen } from '../pages/BookList';
+import { FileUpload } from '../pages/FileUpload';
 import type { MainTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -25,12 +26,14 @@ export function MainTabs() {
         },
         tabBarIcon: ({ color, size }) => {
           if (route.name === 'Home') return <Home color={color} size={size} />;
+          if (route.name === 'FileUpload') return <Upload color={color} size={size} />;
           return <Library color={color} size={size} />;
         },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Library" component={LibraryScreen} />
+      <Tab.Screen name="FileUpload" component={FileUpload} />
     </Tab.Navigator>
   );
 }

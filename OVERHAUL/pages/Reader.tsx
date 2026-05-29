@@ -9,6 +9,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RouteProp } from '@react-navigation/native';
 import { chapters } from '../data/books';
 import type { RootStackParamList } from '../navigation/types';
+import { useData } from '../hooks/useData';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Reader'>;
 type Route = RouteProp<RootStackParamList, 'Reader'>;
@@ -17,9 +18,10 @@ export function ReaderScreen() {
   const navigation = useNavigation<Nav>();
   const route = useRoute<Route>();
   const insets = useSafeAreaInsets();
-  const { chapterId } = route.params;
+  const { chapterId, from } = route.params;
+  const context = useData();
 
-  const chapter = chapters.find(c => c.id === chapterId);
+  const chapter = from === 'Books' ? chapters.find(c => c.id === chapterId) : context;
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -72,7 +74,7 @@ export function ReaderScreen() {
           <ArrowLeft color="#ffffff" size={24} />
         </TouchableOpacity>
         <View style={styles.headerCenter}>
-          <Text style={styles.chapterLabel}>{chapter.title}</Text>
+          {/* <Text style={styles.chapterLabel}>{chapter.title}</Text> */}
           <View style={styles.progressRow}>
             <View style={styles.progressTrack}>
               <View style={[styles.progressFill, { width: `${progressPercent}%` as any }]} />
