@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Play, CheckCircle2, Circle } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,6 +10,43 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'ChapterList'>;
 type Route = RouteProp<RootStackParamList, 'ChapterList'>;
+
+const { width, height } = Dimensions.get("window");
+const minDim = Math.min(width, height);
+const isTablet = minDim >= 600;
+
+// Dynamic size calculations - responsive based on device type
+const backIconSize = minDim * (isTablet ? 0.046 : 0.055);
+const headerPaddingB = minDim * (isTablet ? 0.053 : 0.065);
+const headerPaddingH = minDim * (isTablet ? 0.038 : 0.045);
+const backBtnPadding = minDim * (isTablet ? 0.008 : 0.01);
+const backBtnMarginB = minDim * (isTablet ? 0.03 : 0.035);
+const bookRowGap = minDim * (isTablet ? 0.038 : 0.045);
+const coverImageW = minDim * (isTablet ? 0.21 : 0.25);
+const coverImageH = minDim * (isTablet ? 0.31 : 0.36);
+const bookTitleFontSize = minDim * (isTablet ? 0.042 : 0.05);
+const bookAuthorFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const progressLabelFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const progressLabelMarginB = minDim * (isTablet ? 0.012 : 0.015);
+const progressTrackHeight = minDim * (isTablet ? 0.012 : 0.015);
+const chaptersSectionPadding = minDim * (isTablet ? 0.038 : 0.045);
+const chaptersHeadingFontSize = minDim * (isTablet ? 0.038 : 0.045);
+const chaptersHeadingMarginB = minDim * (isTablet ? 0.03 : 0.035);
+const chapterCardGap = minDim * (isTablet ? 0.027 : 0.032);
+const chapterCardPadding = minDim * (isTablet ? 0.03 : 0.035);
+const chapterCardMarginB = minDim * (isTablet ? 0.019 : 0.023);
+const chapterIconW = minDim * (isTablet ? 0.053 : 0.06);
+const chapterMetaRowGap = minDim * (isTablet ? 0.015 : 0.02);
+const chapterNumFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const upNextBadgePaddingV = minDim * (isTablet ? 0.004 : 0.005);
+const upNextBadgePaddingH = minDim * (isTablet ? 0.015 : 0.02);
+const upNextBadgeBorderRadius = minDim * (isTablet ? 0.038 : 0.045);
+const upNextTextFontSize = minDim * (isTablet ? 0.021 : 0.025);
+const chapterTitleFontSize = minDim * (isTablet ? 0.028 : 0.032);
+const playBtnSize = minDim * (isTablet ? 0.069 : 0.08);
+const playBtnBorderRadius = playBtnSize / 2;
+const emptyPaddingT = minDim * (isTablet ? 0.09 : 0.11);
+const emptyTextFontSize = minDim * (isTablet ? 0.028 : 0.035);
 
 export function ChapterListScreen() {
   const navigation = useNavigation<Nav>();
@@ -34,15 +71,15 @@ export function ChapterListScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: minDim * 0.15 }}>
         <LinearGradient
           colors={['#9333ea', '#2563eb']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={[styles.header, { paddingTop: insets.top + 8 }]}
+          style={[styles.header, { paddingTop: insets.top + (isTablet ? 8 : 4) }]}
         >
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <ArrowLeft color="#ffffff" size={24} />
+            <ArrowLeft color="#ffffff" size={backIconSize} />
           </TouchableOpacity>
 
           <View style={styles.bookRow}>
@@ -73,8 +110,8 @@ export function ChapterListScreen() {
             >
               <View style={styles.chapterIcon}>
                 {chapter.isCompleted
-                  ? <CheckCircle2 color="#16a34a" size={24} />
-                  : <Circle color="#cbd5e1" size={24} />
+                  ? <CheckCircle2 color="#16a34a" size={backIconSize} />
+                  : <Circle color="#cbd5e1" size={backIconSize} />
                 }
               </View>
               <View style={styles.chapterInfo}>
@@ -89,7 +126,7 @@ export function ChapterListScreen() {
                 <Text style={styles.chapterTitle}>{chapter.title}</Text>
               </View>
               <View style={styles.playBtn}>
-                <Play color="#9333ea" size={18} fill="#9333ea" />
+                <Play color="#9333ea" size={minDim * 0.034} fill="#9333ea" />
               </View>
             </TouchableOpacity>
           ))}
@@ -106,57 +143,57 @@ export function ChapterListScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  header: { paddingHorizontal: 20, paddingBottom: 28 },
-  backBtn: { padding: 4, alignSelf: 'flex-start', marginBottom: 16 },
-  bookRow: { flexDirection: 'row', gap: 20, alignItems: 'flex-end' },
-  coverImage: { width: 110, height: 160, borderRadius: 10 },
+  header: { paddingHorizontal: headerPaddingH, paddingBottom: headerPaddingB },
+  backBtn: { padding: backBtnPadding, alignSelf: 'flex-start', marginBottom: backBtnMarginB },
+  bookRow: { flexDirection: 'row', gap: bookRowGap, alignItems: 'flex-end' },
+  coverImage: { width: coverImageW, height: coverImageH, borderRadius: minDim * 0.019 },
   bookMeta: { flex: 1 },
-  bookTitle: { color: '#ffffff', fontSize: 22, fontWeight: '700', marginBottom: 4 },
-  bookAuthor: { color: 'rgba(255,255,255,0.8)', fontSize: 14, marginBottom: 16 },
-  progressLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  progressLabel: { color: 'rgba(255,255,255,0.8)', fontSize: 12 },
+  bookTitle: { color: '#ffffff', fontSize: bookTitleFontSize, fontWeight: '700', marginBottom: minDim * 0.008 },
+  bookAuthor: { color: 'rgba(255,255,255,0.8)', fontSize: bookAuthorFontSize, marginBottom: minDim * 0.03 },
+  progressLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: progressLabelMarginB },
+  progressLabel: { color: 'rgba(255,255,255,0.8)', fontSize: progressLabelFontSize },
   progressTrack: {
-    height: 6,
+    height: progressTrackHeight,
     backgroundColor: 'rgba(255,255,255,0.25)',
-    borderRadius: 3,
+    borderRadius: progressTrackHeight / 2,
     overflow: 'hidden',
   },
-  progressFill: { height: '100%', backgroundColor: '#ffffff', borderRadius: 3 },
-  chaptersSection: { padding: 20 },
-  chaptersHeading: { fontSize: 20, fontWeight: '600', color: '#0f172a', marginBottom: 16 },
+  progressFill: { height: '100%', backgroundColor: '#ffffff', borderRadius: progressTrackHeight / 2 },
+  chaptersSection: { padding: chaptersSectionPadding },
+  chaptersHeading: { fontSize: chaptersHeadingFontSize, fontWeight: '600', color: '#0f172a', marginBottom: chaptersHeadingMarginB },
   chapterCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: chapterCardGap,
     backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 10,
+    borderRadius: minDim * 0.023,
+    padding: chapterCardPadding,
+    marginBottom: chapterCardMarginB,
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 1 },
     elevation: 1,
   },
-  chapterIcon: { width: 28, alignItems: 'center' },
+  chapterIcon: { width: chapterIconW, alignItems: 'center' },
   chapterInfo: { flex: 1 },
-  chapterMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 },
-  chapterNum: { fontSize: 12, color: '#94a3b8' },
+  chapterMetaRow: { flexDirection: 'row', alignItems: 'center', gap: chapterMetaRowGap, marginBottom: minDim * 0.008 },
+  chapterNum: { fontSize: chapterNumFontSize, color: '#94a3b8' },
   upNextBadge: {
     backgroundColor: '#dbeafe',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 20,
+    paddingHorizontal: upNextBadgePaddingH,
+    paddingVertical: upNextBadgePaddingV,
+    borderRadius: upNextBadgeBorderRadius,
   },
-  upNextText: { fontSize: 11, color: '#1d4ed8', fontWeight: '600' },
-  chapterTitle: { fontSize: 15, fontWeight: '500', color: '#0f172a' },
+  upNextText: { fontSize: upNextTextFontSize, color: '#1d4ed8', fontWeight: '600' },
+  chapterTitle: { fontSize: chapterTitleFontSize, fontWeight: '500', color: '#0f172a' },
   playBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: playBtnSize,
+    height: playBtnSize,
+    borderRadius: playBtnBorderRadius,
     backgroundColor: '#f5f3ff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emptyText: { color: '#94a3b8', textAlign: 'center', paddingTop: 48, fontSize: 15 },
+  emptyText: { color: '#94a3b8', textAlign: 'center', paddingTop: emptyPaddingT, fontSize: emptyTextFontSize },
 });

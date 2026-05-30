@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   View, Text, TextInput, ScrollView, TouchableOpacity,
-  Image, StyleSheet, FlatList,
+  Image, StyleSheet, FlatList, Dimensions,
 } from 'react-native';
 import { Search } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,6 +12,41 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 const ALL = 'All';
+
+const { width, height } = Dimensions.get("window");
+const minDim = Math.min(width, height);
+const isTablet = minDim >= 600;
+
+// Dynamic size calculations - responsive based on device type
+const headingFontSize = minDim * (isTablet ? 0.05 : 0.065);
+const searchIconSize = minDim * (isTablet ? 0.034 : 0.045);
+const searchInputFontSize = minDim * (isTablet ? 0.028 : 0.035);
+const searchPaddingV = minDim * (isTablet ? 0.019 : 0.025);
+const searchPaddingH = minDim * (isTablet ? 0.023 : 0.03);
+const searchGap = minDim * (isTablet ? 0.015 : 0.02);
+const chipPaddingV = minDim * (isTablet ? 0.013 : 0.018);
+const chipPaddingH = minDim * (isTablet ? 0.03 : 0.04);
+const chipGap = minDim * (isTablet ? 0.015 : 0.02);
+const chipFontSize = minDim * (isTablet ? 0.025 : 0.032);
+const gridPadding = minDim * (isTablet ? 0.03 : 0.04);
+const rowGap = minDim * (isTablet ? 0.023 : 0.03);
+const resultCountFontSize = minDim * (isTablet ? 0.025 : 0.032);
+const bookCardBorderRadius = minDim * (isTablet ? 0.023 : 0.03);
+const coverHeight = minDim * (isTablet ? 0.36 : 0.42);
+const statusBadgePaddingV = minDim * (isTablet ? 0.006 : 0.008);
+const statusBadgePaddingH = minDim * (isTablet ? 0.015 : 0.02);
+const statusBadgeFontSize = minDim * (isTablet ? 0.019 : 0.023);
+const genreBadgePaddingV = minDim * (isTablet ? 0.006 : 0.008);
+const genreBadgePaddingH = minDim * (isTablet ? 0.015 : 0.02);
+const genreBadgeFontSize = minDim * (isTablet ? 0.019 : 0.023);
+const cardInfoPadding = minDim * (isTablet ? 0.023 : 0.03);
+const bookTitleFontSize = minDim * (isTablet ? 0.025 : 0.032);
+const bookAuthorFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const progressTrackHeight = minDim * (isTablet ? 0.008 : 0.01);
+const emptyPaddingT = minDim * (isTablet ? 0.12 : 0.15);
+const emptyTextFontSize = minDim * (isTablet ? 0.028 : 0.035);
+const clearTextFontSize = minDim * (isTablet ? 0.025 : 0.032);
+const headerPaddingH = minDim * (isTablet ? 0.04 : 0.05);
 
 function statusBadge(progress: number): { label: string; color: string } {
   if (progress === 0) return { label: 'Not Started', color: '#94a3b8' };
@@ -38,11 +73,11 @@ export function LibraryScreen() {
   return (
     <View style={styles.container}>
       {/* Sticky header */}
-      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
+      <View style={[styles.header, { paddingTop: insets.top + (isTablet ? 16 : 8) }]}>
         <Text style={styles.heading}>Library</Text>
 
         <View style={styles.searchRow}>
-          <Search color="#94a3b8" size={18} />
+          <Search color="#94a3b8" size={searchIconSize} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search books or authors..."
@@ -140,35 +175,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#e2e8f0',
-    paddingHorizontal: 20,
+    paddingHorizontal: headerPaddingH,
     paddingBottom: 0,
   },
-  heading: { fontSize: 26, fontWeight: '700', color: '#0f172a', marginBottom: 12 },
+  heading: { fontSize: headingFontSize, fontWeight: '700', color: '#0f172a', marginBottom: minDim * 0.023 },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f1f5f9',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    gap: 8,
-    marginBottom: 12,
+    borderRadius: minDim * 0.019,
+    paddingHorizontal: searchPaddingH,
+    paddingVertical: searchPaddingV,
+    gap: searchGap,
+    marginBottom: minDim * 0.023,
   },
-  searchInput: { flex: 1, fontSize: 15, color: '#0f172a' },
-  chips: { paddingBottom: 12, gap: 8 },
-  chip: { paddingHorizontal: 16, paddingVertical: 7, borderRadius: 50, borderWidth: 1 },
+  searchInput: { flex: 1, fontSize: searchInputFontSize, color: '#0f172a' },
+  chips: { paddingBottom: minDim * 0.023, gap: chipGap },
+  chip: { paddingHorizontal: chipPaddingH, paddingVertical: chipPaddingV, borderRadius: minDim * 0.095, borderWidth: 1 },
   chipActive: { backgroundColor: '#9333ea', borderColor: 'transparent' },
   chipInactive: { backgroundColor: '#ffffff', borderColor: '#e2e8f0' },
-  chipText: { fontSize: 13 },
+  chipText: { fontSize: chipFontSize },
   chipTextActive: { color: '#ffffff', fontWeight: '600' },
   chipTextInactive: { color: '#475569' },
-  grid: { padding: 16, paddingTop: 12 },
-  row: { gap: 12, justifyContent: 'space-between', marginBottom: 12 },
-  resultCount: { fontSize: 13, color: '#94a3b8', marginBottom: 12 },
+  grid: { padding: gridPadding, paddingTop: minDim * 0.023, paddingBottom: minDim * 0.15 },
+  row: { gap: rowGap, justifyContent: 'space-between', marginBottom: minDim * 0.023 },
+  resultCount: { fontSize: resultCountFontSize, color: '#94a3b8', marginBottom: minDim * 0.023 },
   bookCard: {
     flex: 1,
     backgroundColor: '#ffffff',
-    borderRadius: 12,
+    borderRadius: bookCardBorderRadius,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOpacity: 0.06,
@@ -176,32 +211,32 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
-  cover: { width: '100%', height: 190, resizeMode: 'cover' },
+  cover: { width: '100%', height: coverHeight, resizeMode: 'cover' },
   statusBadge: {
     position: 'absolute',
-    top: 8,
-    right: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 20,
+    top: minDim * 0.015,
+    right: minDim * 0.015,
+    paddingHorizontal: statusBadgePaddingH,
+    paddingVertical: statusBadgePaddingV,
+    borderRadius: minDim * 0.038,
   },
-  statusText: { color: '#ffffff', fontSize: 10, fontWeight: '600' },
+  statusText: { color: '#ffffff', fontSize: statusBadgeFontSize, fontWeight: '600' },
   genrePill: {
     position: 'absolute',
-    bottom: 8,
-    left: 8,
+    bottom: minDim * 0.015,
+    left: minDim * 0.015,
     backgroundColor: 'rgba(0,0,0,0.55)',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 20,
+    paddingHorizontal: genreBadgePaddingH,
+    paddingVertical: genreBadgePaddingV,
+    borderRadius: minDim * 0.038,
   },
-  genreText: { color: '#ffffff', fontSize: 10 },
-  cardInfo: { padding: 12 },
-  bookTitle: { fontSize: 13, fontWeight: '600', color: '#0f172a', marginBottom: 4 },
-  bookAuthor: { fontSize: 12, color: '#64748b', marginBottom: 6 },
-  progressTrack: { height: 4, backgroundColor: '#e2e8f0', borderRadius: 2, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: '#9333ea', borderRadius: 2 },
-  empty: { alignItems: 'center', paddingTop: 64 },
-  emptyText: { color: '#94a3b8', fontSize: 15 },
-  clearText: { color: '#9333ea', fontSize: 13, marginTop: 8 },
+  genreText: { color: '#ffffff', fontSize: genreBadgeFontSize },
+  cardInfo: { padding: cardInfoPadding },
+  bookTitle: { fontSize: bookTitleFontSize, fontWeight: '600', color: '#0f172a', marginBottom: minDim * 0.008 },
+  bookAuthor: { fontSize: bookAuthorFontSize, color: '#64748b', marginBottom: minDim * 0.012 },
+  progressTrack: { height: progressTrackHeight, backgroundColor: '#e2e8f0', borderRadius: progressTrackHeight / 2, overflow: 'hidden' },
+  progressFill: { height: '100%', backgroundColor: '#9333ea', borderRadius: progressTrackHeight / 2 },
+  empty: { alignItems: 'center', paddingTop: emptyPaddingT },
+  emptyText: { color: '#94a3b8', fontSize: emptyTextFontSize },
+  clearText: { color: '#9333ea', fontSize: clearTextFontSize, marginTop: minDim * 0.015 },
 });

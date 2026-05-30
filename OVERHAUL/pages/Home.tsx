@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BookOpen, Clock, TrendingUp, Zap, Sparkles } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,6 +9,48 @@ import { books } from '../data/books';
 import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
+
+const { width, height } = Dimensions.get("window");
+const minDim = Math.min(width, height);
+const isTablet = minDim >= 600;
+
+// Dynamic size calculations - responsive based on device type
+const brandFontSize = minDim * (isTablet ? 0.045 : 0.06);
+const subtitleFontSize = minDim * (isTablet ? 0.028 : 0.035);
+const headerPaddingB = minDim * (isTablet ? 0.12 : 0.15);
+const statsGap = minDim * (isTablet ? 0.023 : 0.03);
+const statsMarginH = minDim * (isTablet ? 0.04 : 0.05);
+const statsMarginT = -minDim * (isTablet ? 0.085 : 0.09);
+const statsMarginB = minDim * (isTablet ? 0.053 : 0.06);
+const statCardPadding = minDim * (isTablet ? 0.027 : 0.035);
+const statCardGap = minDim * (isTablet ? 0.012 : 0.015);
+const statNumberFontSize = minDim * (isTablet ? 0.042 : 0.05);
+const statLabelFontSize = minDim * (isTablet ? 0.021 : 0.025);
+const sectionMarginB = minDim * (isTablet ? 0.053 : 0.06);
+const sectionHeaderGap = minDim * (isTablet ? 0.015 : 0.02);
+const sectionHeaderMarginB = minDim * (isTablet ? 0.027 : 0.035);
+const sectionHeaderPaddingH = minDim * (isTablet ? 0.04 : 0.05);
+const sectionTitleFontSize = minDim * (isTablet ? 0.034 : 0.04);
+const continueCardGap = minDim * (isTablet ? 0.03 : 0.04);
+const continueCardPadding = minDim * (isTablet ? 0.03 : 0.04);
+const continueCardMarginH = minDim * (isTablet ? 0.04 : 0.05);
+const continueCardMarginB = minDim * (isTablet ? 0.023 : 0.03);
+const continueImageW = minDim * (isTablet ? 0.14 : 0.18);
+const continueImageH = minDim * (isTablet ? 0.20 : 0.25);
+const bookTitleFontSize = minDim * (isTablet ? 0.028 : 0.035);
+const bookAuthorFontSize = minDim * (isTablet ? 0.025 : 0.03);
+const progressTrackHeight = minDim * (isTablet ? 0.012 : 0.015);
+const progressTextFontSize = minDim * (isTablet ? 0.021 : 0.025);
+const recListGap = minDim * (isTablet ? 0.027 : 0.035);
+const recCardW = minDim * (isTablet ? 0.27 : 0.32);
+const recImageW = minDim * (isTablet ? 0.27 : 0.32);
+const recImageH = minDim * (isTablet ? 0.40 : 0.45);
+const genrePillPaddingH = minDim * (isTablet ? 0.015 : 0.02);
+const genrePillPaddingV = minDim * (isTablet ? 0.006 : 0.008);
+const genreTextFontSize = minDim * (isTablet ? 0.019 : 0.023);
+const recTitleFontSize = minDim * (isTablet ? 0.025 : 0.03);
+const recAuthorFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const brandGap = minDim * (isTablet ? 0.019 : 0.025);
 
 export function HomeScreen() {
     const navigation = useNavigation<Nav>();
@@ -26,10 +68,10 @@ export function HomeScreen() {
                     colors={['#9333ea', '#2563eb']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
-                    style={[styles.header, { paddingTop: insets.top + 16 }]}
+                    style={[styles.header, { paddingTop: insets.top + (isTablet ? 16 : 8) }]}
                 >
                     <View style={styles.brandRow}>
-                        <JumpReadLogo size={40} />
+                        <JumpReadLogo size={minDim * 0.077} />
                         <Text style={styles.brandName}>Jump Read</Text>
                     </View>
                     <Text style={styles.subtitle}>Ready to accelerate your reading?</Text>
@@ -42,7 +84,7 @@ export function HomeScreen() {
                         { Icon: TrendingUp, value: 320, label: 'WPM', color: '#16a34a' },
                     ].map(({ Icon, value, label, color }) => (
                         <View key={label} style={styles.statCard}>
-                            <Icon color={color} size={22} />
+                            <Icon color={color} size={minDim * 0.042} />
                             <Text style={styles.statNumber}>{value}</Text>
                             <Text style={styles.statLabel}>{label}</Text>
                         </View>
@@ -53,7 +95,7 @@ export function HomeScreen() {
                 {recentBooks.length > 0 && (
                     <View style={styles.section}>
                         <View style={styles.sectionHeader}>
-                            <Zap color="#eab308" size={20} />
+                            <Zap color="#eab308" size={minDim * 0.038} />
                             <Text style={styles.sectionTitle}>Continue Reading</Text>
                         </View>
                         {recentBooks.map(book => (
@@ -81,7 +123,7 @@ export function HomeScreen() {
                 {unreadBooks.length > 0 && (
                     <View style={styles.section}>
                         <View style={styles.sectionHeader}>
-                            <Sparkles color="#a855f7" size={20} />
+                            <Sparkles color="#a855f7" size={minDim * 0.038} />
                             <Text style={styles.sectionTitle}>Recommended for You</Text>
                         </View>
                         <ScrollView
@@ -116,82 +158,82 @@ export function HomeScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#f8fafc' },
-    header: { paddingHorizontal: 24, paddingBottom: 64 },
-    brandRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6 },
-    brandName: { color: '#ffffff', fontSize: 24, fontWeight: '700' },
-    subtitle: { color: 'rgba(255,255,255,0.8)', fontSize: 15 },
-    scroll: { paddingBottom: 24 },
+    header: { paddingHorizontal: minDim * 0.046, paddingBottom: headerPaddingB },
+    brandRow: { flexDirection: 'row', alignItems: 'center', gap: brandGap, marginBottom: minDim * 0.012 },
+    brandName: { color: '#ffffff', fontSize: brandFontSize, fontWeight: '700' },
+    subtitle: { color: 'rgba(255,255,255,0.8)', fontSize: subtitleFontSize },
+    scroll: { paddingBottom: minDim * 0.15 },
     statsRow: {
         flexDirection: 'row',
-        gap: 12,
-        marginHorizontal: 20,
-        marginTop: -44,
-        marginBottom: 28,
+        gap: statsGap,
+        marginHorizontal: statsMarginH,
+        marginTop: statsMarginT,
+        marginBottom: statsMarginB,
     },
     statCard: {
         flex: 1,
         backgroundColor: '#ffffff',
-        borderRadius: 14,
-        padding: 14,
+        borderRadius: minDim * 0.027,
+        padding: statCardPadding,
         alignItems: 'center',
-        gap: 6,
+        gap: statCardGap,
         shadowColor: '#000',
         shadowOpacity: 0.1,
         shadowRadius: 8,
         shadowOffset: { width: 0, height: 2 },
         elevation: 4,
     },
-    statNumber: { fontSize: 22, fontWeight: '700', color: '#0f172a' },
-    statLabel: { fontSize: 11, color: '#64748b' },
-    section: { marginBottom: 28 },
+    statNumber: { fontSize: statNumberFontSize, fontWeight: '700', color: '#0f172a' },
+    statLabel: { fontSize: statLabelFontSize, color: '#64748b' },
+    section: { marginBottom: sectionMarginB },
     sectionHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
-        marginBottom: 14,
-        paddingHorizontal: 20,
+        gap: sectionHeaderGap,
+        marginBottom: sectionHeaderMarginB,
+        paddingHorizontal: sectionHeaderPaddingH,
     },
-    sectionTitle: { fontSize: 18, fontWeight: '600', color: '#0f172a' },
+    sectionTitle: { fontSize: sectionTitleFontSize, fontWeight: '600', color: '#0f172a' },
     continueCard: {
         flexDirection: 'row',
-        gap: 16,
+        gap: continueCardGap,
         backgroundColor: '#ffffff',
-        borderRadius: 14,
-        padding: 16,
-        marginHorizontal: 20,
-        marginBottom: 12,
+        borderRadius: minDim * 0.027,
+        padding: continueCardPadding,
+        marginHorizontal: continueCardMarginH,
+        marginBottom: continueCardMarginB,
         shadowColor: '#000',
         shadowOpacity: 0.06,
         shadowRadius: 6,
         shadowOffset: { width: 0, height: 2 },
         elevation: 2,
     },
-    continueImage: { width: 72, height: 104, borderRadius: 8 },
+    continueImage: { width: continueImageW, height: continueImageH, borderRadius: minDim * 0.015 },
     continueInfo: { flex: 1 },
-    bookTitle: { fontSize: 15, fontWeight: '600', color: '#0f172a', marginBottom: 4 },
-    bookAuthor: { fontSize: 13, color: '#64748b', marginBottom: 12 },
+    bookTitle: { fontSize: bookTitleFontSize, fontWeight: '600', color: '#0f172a', marginBottom: minDim * 0.008 },
+    bookAuthor: { fontSize: bookAuthorFontSize, color: '#64748b', marginBottom: minDim * 0.023 },
     progressTrack: {
-        height: 6,
+        height: progressTrackHeight,
         backgroundColor: '#e2e8f0',
-        borderRadius: 3,
+        borderRadius: progressTrackHeight / 2,
         overflow: 'hidden',
-        marginBottom: 6,
+        marginBottom: minDim * 0.012,
     },
-    progressFill: { height: '100%', backgroundColor: '#9333ea', borderRadius: 3 },
-    progressText: { fontSize: 11, color: '#94a3b8' },
-    recList: { paddingHorizontal: 20, gap: 14 },
-    recCard: { width: 140 },
-    recImage: { width: 140, height: 206, borderRadius: 12, marginBottom: 10 },
+    progressFill: { height: '100%', backgroundColor: '#9333ea', borderRadius: progressTrackHeight / 2 },
+    progressText: { fontSize: progressTextFontSize, color: '#94a3b8' },
+    recList: { paddingHorizontal: minDim * 0.04, gap: recListGap },
+    recCard: { width: recCardW },
+    recImage: { width: recImageW, height: recImageH, borderRadius: minDim * 0.023, marginBottom: minDim * 0.019 },
     genrePill: {
         position: 'absolute',
-        top: 8,
-        left: 8,
+        top: minDim * 0.015,
+        left: minDim * 0.015,
         backgroundColor: '#9333ea',
-        paddingHorizontal: 8,
-        paddingVertical: 3,
-        borderRadius: 20,
+        paddingHorizontal: genrePillPaddingH,
+        paddingVertical: genrePillPaddingV,
+        borderRadius: minDim * 0.038,
     },
-    genreText: { color: '#ffffff', fontSize: 10, fontWeight: '600' },
-    recTitle: { fontSize: 13, fontWeight: '600', color: '#0f172a', marginBottom: 3 },
-    recAuthor: { fontSize: 12, color: '#64748b' },
+    genreText: { color: '#ffffff', fontSize: genreTextFontSize, fontWeight: '600' },
+    recTitle: { fontSize: recTitleFontSize, fontWeight: '600', color: '#0f172a', marginBottom: minDim * 0.006 },
+    recAuthor: { fontSize: recAuthorFontSize, color: '#64748b' },
 });

@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ArrowRight, BookOpen, Target, Zap } from "lucide-react-native"
 import { LinearGradient } from "expo-linear-gradient"
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
@@ -10,6 +10,26 @@ import { JumpReadLogo } from "OVERHAUL/components/JumpReadLogo";
 import * as SecureStore from 'expo-secure-store';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Onboarding'>;
+
+const { width, height } = Dimensions.get("window");
+const minDim = Math.min(width, height);
+const isTablet = minDim >= 600;
+
+// Dynamic size calculations - responsive based on device type
+const iconSize = minDim * (isTablet ? 0.25 : 0.35);
+const titleFontSize = minDim * (isTablet ? 0.06 : 0.08);
+const descriptionFontSize = minDim * (isTablet ? 0.03 : 0.04);
+const brandFontSize = minDim * (isTablet ? 0.035 : 0.045);
+const skipFontSize = minDim * (isTablet ? 0.028 : 0.035);
+const buttonFontSize = minDim * (isTablet ? 0.028 : 0.035);
+const buttonPaddingV = minDim * (isTablet ? 0.025 : 0.03);
+const buttonPaddingH = minDim * (isTablet ? 0.07 : 0.09);
+const dotHeight = minDim * (isTablet ? 0.015 : 0.02);
+const dotActiveWidth = minDim * (isTablet ? 0.06 : 0.08);
+const dotInactiveWidth = minDim * (isTablet ? 0.015 : 0.02);
+const paddingH = minDim * (isTablet ? 0.05 : 0.06);
+const contentPaddingH = minDim * (isTablet ? 0.07 : 0.08);
+const gap = minDim * (isTablet ? 0.015 : 0.02);
 
 const slides = [
   {
@@ -70,7 +90,7 @@ export function Onboarding() {
       </View>
 
       <View style={styles.content}>
-        <Icon size={120} color={color} strokeWidth={1.5} />
+        <Icon size={iconSize} color={color} strokeWidth={1.5} />
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
 
@@ -99,47 +119,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingBottom: 12,
+    paddingHorizontal: paddingH,
+    paddingBottom: minDim * 0.02,
   },
-  brand: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  brandName: { color: '#ffffff', fontSize: 20, fontWeight: '700' },
-  skipText: { color: 'rgba(255,255,255,0.7)', fontSize: 16 },
+  brand: { flexDirection: 'row', alignItems: 'center', gap: gap },
+  brandName: { color: '#ffffff', fontSize: brandFontSize, fontWeight: '700' },
+  skipText: { color: 'rgba(255,255,255,0.7)', fontSize: skipFontSize },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 32,
-    paddingBottom: 80,
+    paddingHorizontal: contentPaddingH,
+    paddingBottom: minDim * 0.15,
     gap: 0,
   },
   title: {
     color: '#ffffff',
-    fontSize: 36,
+    fontSize: titleFontSize,
     fontWeight: '700',
     textAlign: 'center',
-    marginTop: 40,
-    marginBottom: 16,
+    marginTop: minDim * 0.07,
+    marginBottom: minDim * 0.03,
   },
   description: {
     color: 'rgba(255,255,255,0.7)',
-    fontSize: 18,
+    fontSize: descriptionFontSize,
     textAlign: 'center',
-    lineHeight: 28,
-    marginBottom: 48,
+    lineHeight: descriptionFontSize * 1.6,
+    marginBottom: minDim * 0.09,
   },
-  dots: { flexDirection: 'row', gap: 8, marginBottom: 48 },
-  dot: { height: 8, borderRadius: 4 },
-  dotActive: { width: 32, backgroundColor: '#ffffff' },
-  dotInactive: { width: 8, backgroundColor: 'rgba(255,255,255,0.3)' },
+  dots: { flexDirection: 'row', gap: gap, marginBottom: minDim * 0.09 },
+  dot: { height: dotHeight, borderRadius: dotHeight / 2 },
+  dotActive: { width: dotActiveWidth, backgroundColor: '#ffffff' },
+  dotInactive: { width: dotInactiveWidth, backgroundColor: 'rgba(255,255,255,0.3)' },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: gap,
     backgroundColor: '#ffffff',
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 50,
+    paddingVertical: buttonPaddingV,
+    paddingHorizontal: buttonPaddingH,
+    borderRadius: buttonPaddingV * 3.5,
   },
-  buttonText: { color: '#1e293b', fontSize: 16, fontWeight: '600' },
+  buttonText: { color: '#1e293b', fontSize: buttonFontSize, fontWeight: '600' },
 })

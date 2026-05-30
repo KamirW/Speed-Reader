@@ -1,4 +1,5 @@
 export type RootStackParamList = {
+  Splash: undefined;
   Onboarding: undefined;
   MainTabs: undefined;
   ChapterList: { bookId: string };
@@ -8,5 +9,5 @@ export type RootStackParamList = {
 export type MainTabParamList = {
   Home: undefined;
   Library: undefined;
-  FileUpload: undefined;
+  Upload: undefined;
 };

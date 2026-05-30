@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, StyleSheet, Alert, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
@@ -10,6 +10,56 @@ import { useData } from "../hooks/useData";
 import { Upload, PenLine, FileText, X, BookOpen, ChevronRight } from "lucide-react-native";
 
 type InputMode = "upload" | "type";
+
+const { width, height } = Dimensions.get("window");
+const minDim = Math.min(width, height);
+const isTablet = minDim >= 600;
+
+// Dynamic size calculations - responsive based on device type
+const headerTitleFontSize = minDim * (isTablet ? 0.045 : 0.055);
+const headerSubtitleFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const headerPaddingB = minDim * (isTablet ? 0.077 : 0.09);
+const contentPaddingH = minDim * (isTablet ? 0.046 : 0.055);
+const contentPaddingT = minDim * (isTablet ? 0.03 : 0.04);
+const modeTogglePadding = minDim * (isTablet ? 0.012 : 0.015);
+const modeButtonPaddingV = minDim * (isTablet ? 0.019 : 0.023);
+const modeButtonTextFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const modeIconSize = minDim * (isTablet ? 0.03 : 0.038);
+const sectionMarginB = minDim * (isTablet ? 0.046 : 0.055);
+const uploadBoxPadding = minDim * (isTablet ? 0.09 : 0.11);
+const uploadIconSize = minDim * (isTablet ? 0.11 : 0.14);
+const uploadIconBorderRadius = minDim * (isTablet ? 0.053 : 0.065);
+const uploadIconMarginB = minDim * (isTablet ? 0.03 : 0.04);
+const uploadTitleFontSize = minDim * (isTablet ? 0.03 : 0.038);
+const uploadSubtitleFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const fileCardPadding = minDim * (isTablet ? 0.03 : 0.04);
+const fileCardGap = minDim * (isTablet ? 0.023 : 0.03);
+const fileIconSize = minDim * (isTablet ? 0.077 : 0.095);
+const fileIconBorderRadius = minDim * (isTablet ? 0.023 : 0.03);
+const fileNameFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const fileWordCountFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const clearButtonSize = minDim * (isTablet ? 0.06 : 0.075);
+const clearButtonBorderRadius = minDim * (isTablet ? 0.03 : 0.038);
+const textInputHeight = minDim * (isTablet ? 0.37 : 0.42);
+const textInputPadding = minDim * (isTablet ? 0.03 : 0.04);
+const textInputFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const textInputFooterPaddingV = minDim * (isTablet ? 0.015 : 0.02);
+const textInputFooterPaddingH = minDim * (isTablet ? 0.03 : 0.04);
+const wordCountFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const clearTextButtonFontSize = minDim * (isTablet ? 0.023 : 0.028);
+const clearTextButtonGap = minDim * (isTablet ? 0.008 : 0.01);
+const clearTextIconSize = minDim * (isTablet ? 0.023 : 0.028);
+const previewTitleFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const previewTitleMarginB = minDim * (isTablet ? 0.015 : 0.02);
+const previewContainerPadding = minDim * (isTablet ? 0.038 : 0.045);
+const previewContainerMaxHeight = minDim * (isTablet ? 0.37 : 0.42);
+const previewTextFontSize = minDim * (isTablet ? 0.026 : 0.032);
+const previewTextLineHeight = minDim * (isTablet ? 0.038 : 0.045);
+const readButtonPaddingV = minDim * (isTablet ? 0.03 : 0.04);
+const readButtonGap = minDim * (isTablet ? 0.023 : 0.03);
+const readButtonFontSize = minDim * (isTablet ? 0.03 : 0.038);
+const readIconSize = minDim * (isTablet ? 0.038 : 0.045);
+const readChevronSize = minDim * (isTablet ? 0.034 : 0.04);
 
 export function FileUpload() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -60,7 +110,7 @@ export function FileUpload() {
         colors={['#9333ea', '#2563eb']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={[styles.header, { paddingTop: insets.top + 16 }]}
+        style={[styles.header, { paddingTop: insets.top + (isTablet ? 16 : 8) }]}
       >
         <Text style={styles.headerTitle}>My Text</Text>
         <Text style={styles.headerSubtitle}>Upload a file or type your own text to speed-read</Text>
@@ -80,12 +130,12 @@ export function FileUpload() {
                 end={{ x: 1, y: 0 }}
                 style={styles.modeButtonGradient}
               >
-                <Upload size={16} color="#ffffff" />
+                <Upload size={modeIconSize} color="#ffffff" />
                 <Text style={styles.modeButtonTextActive}>Upload File</Text>
               </LinearGradient>
             ) : (
               <View style={styles.modeButtonPlain}>
-                <Upload size={16} color="#64748b" />
+                <Upload size={modeIconSize} color="#64748b" />
                 <Text style={styles.modeButtonText}>Upload File</Text>
               </View>
             )}
@@ -101,12 +151,12 @@ export function FileUpload() {
                 end={{ x: 1, y: 0 }}
                 style={styles.modeButtonGradient}
               >
-                <PenLine size={16} color="#ffffff" />
+                <PenLine size={modeIconSize} color="#ffffff" />
                 <Text style={styles.modeButtonTextActive}>Type Text</Text>
               </LinearGradient>
             ) : (
               <View style={styles.modeButtonPlain}>
-                <PenLine size={16} color="#64748b" />
+                <PenLine size={modeIconSize} color="#64748b" />
                 <Text style={styles.modeButtonText}>Type Text</Text>
               </View>
             )}
@@ -119,7 +169,7 @@ export function FileUpload() {
             {!uploadedText ? (
               <TouchableOpacity onPress={handleFile} style={styles.uploadBox}>
                 <View style={styles.uploadIcon}>
-                  <Upload size={24} color="#9333ea" />
+                  <Upload size={uploadIconSize} color="#9333ea" />
                 </View>
                 <Text style={styles.uploadTitle}>Tap to browse for a .txt file</Text>
                 <Text style={styles.uploadSubtitle}>Select a text file to upload</Text>
@@ -127,14 +177,14 @@ export function FileUpload() {
             ) : (
               <View style={styles.fileCard}>
                 <View style={styles.fileIcon}>
-                  <FileText size={18} color="#9333ea" />
+                  <FileText size={fileIconSize} color="#9333ea" />
                 </View>
                 <View style={styles.fileInfo}>
                   <Text style={styles.fileName} numberOfLines={1}>{fileName}</Text>
                   <Text style={styles.fileWordCount}>{wordCount.toLocaleString()} words</Text>
                 </View>
                 <TouchableOpacity onPress={clearUpload} style={styles.clearButton}>
-                  <X size={16} color="#94a3b8" />
+                  <X size={clearTextIconSize} color="#94a3b8" />
                 </TouchableOpacity>
               </View>
             )}
@@ -157,7 +207,7 @@ export function FileUpload() {
                 <Text style={styles.wordCountText}>{wordCount.toLocaleString()} words</Text>
                 {typedText && (
                   <TouchableOpacity onPress={() => setTypedText("")} style={styles.clearTextButton}>
-                    <X size={12} color="#94a3b8" />
+                    <X size={clearTextIconSize} color="#94a3b8" />
                     <Text style={styles.clearTextButtonText}>Clear</Text>
                   </TouchableOpacity>
                 )}
@@ -190,9 +240,9 @@ export function FileUpload() {
               end={{ x: 1, y: 0 }}
               style={styles.readButton}
             >
-              <BookOpen size={20} color="#ffffff" />
+              <BookOpen size={readIconSize} color="#ffffff" />
               <Text style={styles.readButtonText}>Start Reading · {wordCount.toLocaleString()} words</Text>
-              <ChevronRight size={18} color="#ffffff" opacity={0.7} />
+              <ChevronRight size={readChevronSize} color="#ffffff" opacity={0.7} />
             </LinearGradient>
           </TouchableOpacity>
         )}
@@ -207,30 +257,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8fafc',
   },
   header: {
-    paddingHorizontal: 24,
-    paddingBottom: 40,
+    paddingHorizontal: contentPaddingH,
+    paddingBottom: headerPaddingB,
   },
   headerTitle: {
     color: '#ffffff',
-    fontSize: 24,
+    fontSize: headerTitleFontSize,
     fontWeight: '700',
-    marginBottom: 4,
+    marginBottom: minDim * 0.008,
   },
   headerSubtitle: {
     color: 'rgba(255,255,255,0.8)',
-    fontSize: 14,
+    fontSize: headerSubtitleFontSize,
   },
   content: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+    paddingHorizontal: contentPaddingH,
+    paddingTop: contentPaddingT,
+    paddingBottom: minDim * 0.15,
     flex: 1,
   },
   modeToggle: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 6,
+    borderRadius: minDim * 0.03,
+    padding: modeTogglePadding,
     flexDirection: 'row',
-    marginBottom: 24,
+    marginBottom: minDim * 0.046,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -244,73 +295,73 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 10,
-    borderRadius: 12,
+    gap: minDim * 0.015,
+    paddingVertical: modeButtonPaddingV,
+    borderRadius: minDim * 0.023,
   },
   modeButtonPlain: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 10,
-    borderRadius: 12,
+    gap: minDim * 0.015,
+    paddingVertical: modeButtonPaddingV,
+    borderRadius: minDim * 0.023,
   },
   modeButtonText: {
-    fontSize: 14,
+    fontSize: modeButtonTextFontSize,
     color: '#64748b',
     fontWeight: '400',
   },
   modeButtonTextActive: {
-    fontSize: 14,
+    fontSize: modeButtonTextFontSize,
     color: '#ffffff',
     fontWeight: '600',
   },
   section: {
-    marginBottom: 24,
+    marginBottom: sectionMarginB,
   },
   uploadBox: {
     backgroundColor: '#ffffff',
     borderWidth: 2,
     borderColor: '#e2e8f0',
     borderStyle: 'dashed',
-    borderRadius: 16,
-    padding: 48,
+    borderRadius: minDim * 0.03,
+    padding: uploadBoxPadding,
     alignItems: 'center',
   },
   uploadIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: uploadIconSize * 2.3,
+    height: uploadIconSize * 2.3,
+    borderRadius: uploadIconBorderRadius,
     backgroundColor: '#f3e8ff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: uploadIconMarginB,
   },
   uploadTitle: {
-    fontSize: 16,
+    fontSize: uploadTitleFontSize,
     fontWeight: '500',
     color: '#334155',
-    marginBottom: 4,
+    marginBottom: minDim * 0.008,
   },
   uploadSubtitle: {
-    fontSize: 14,
+    fontSize: uploadSubtitleFontSize,
     color: '#94a3b8',
   },
   fileCard: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 16,
+    borderRadius: minDim * 0.03,
+    padding: fileCardPadding,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: fileCardGap,
     borderWidth: 1,
     borderColor: '#f1f5f9',
   },
   fileIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: fileIconSize * 2.1,
+    height: fileIconSize * 2.1,
+    borderRadius: fileIconBorderRadius,
     backgroundColor: '#f3e8ff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -319,34 +370,34 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fileName: {
-    fontSize: 14,
+    fontSize: fileNameFontSize,
     fontWeight: '500',
     color: '#1e293b',
-    marginBottom: 2,
+    marginBottom: minDim * 0.004,
   },
   fileWordCount: {
-    fontSize: 12,
+    fontSize: fileWordCountFontSize,
     color: '#94a3b8',
   },
   clearButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: clearButtonSize,
+    height: clearButtonSize,
+    borderRadius: clearButtonBorderRadius,
     backgroundColor: '#f1f5f9',
     alignItems: 'center',
     justifyContent: 'center',
   },
   textInputContainer: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
+    borderRadius: minDim * 0.03,
     borderWidth: 1,
     borderColor: '#f1f5f9',
     overflow: 'hidden',
   },
   textInput: {
-    height: 192,
-    padding: 16,
-    fontSize: 14,
+    height: textInputHeight,
+    padding: textInputPadding,
+    fontSize: textInputFontSize,
     color: '#334155',
     textAlignVertical: 'top',
   },
@@ -354,53 +405,53 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: textInputFooterPaddingH,
+    paddingVertical: textInputFooterPaddingV,
     borderTopWidth: 1,
     borderTopColor: '#f1f5f9',
   },
   wordCountText: {
-    fontSize: 12,
+    fontSize: wordCountFontSize,
     color: '#94a3b8',
   },
   clearTextButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: clearTextButtonGap,
   },
   clearTextButtonText: {
-    fontSize: 12,
+    fontSize: clearTextButtonFontSize,
     color: '#94a3b8',
   },
   previewTitle: {
-    fontSize: 14,
+    fontSize: previewTitleFontSize,
     fontWeight: '600',
     color: '#64748b',
-    marginBottom: 8,
+    marginBottom: previewTitleMarginB,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   previewContainer: {
     backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 20,
-    maxHeight: 192,
+    borderRadius: minDim * 0.03,
+    padding: previewContainerPadding,
+    maxHeight: previewContainerMaxHeight,
     borderWidth: 1,
     borderColor: '#f1f5f9',
   },
   previewText: {
-    fontSize: 14,
+    fontSize: previewTextFontSize,
     color: '#475569',
-    lineHeight: 20,
+    lineHeight: previewTextLineHeight,
   },
   readButton: {
     backgroundColor: 'linear-gradient(90deg, #9333ea 0%, #2563eb 100%)',
-    borderRadius: 16,
-    paddingVertical: 16,
+    borderRadius: minDim * 0.03,
+    paddingVertical: readButtonPaddingV,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
+    gap: readButtonGap,
     shadowColor: '#9333ea',
     shadowOpacity: 0.3,
     shadowRadius: 12,
@@ -408,7 +459,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   readButtonText: {
-    fontSize: 16,
+    fontSize: readButtonFontSize,
     fontWeight: '600',
     color: '#ffffff',
   },
